@@ -35,9 +35,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+package-lock.json
 
 # VSCode
 .vscode
 
 # Tree maker
 tree-maker
+
+#idea
+.idea
