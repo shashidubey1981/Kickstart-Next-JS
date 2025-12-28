@@ -6,12 +6,12 @@ import { useState, useEffect, useCallback } from "react";
 // Importing Contentstack Live Preview utilities for real-time content updates
 import ContentstackLivePreview from "@contentstack/live-preview-utils";
 // Importing functions to fetch page data and initialize live preview
-import { getPage, initLivePreview } from "@/lib/contentstack";
+import { getEntryByUrl, initLivePreview } from "@/lib/contentstack";
 // Importing Page type definition with alias to avoid naming conflicts
 import type { Page as PageProps } from "@/lib/types";
 // Importing the Page component to render the content
-import Page from "./Page";
-
+import { Page } from '@/types'
+import { getPersonalizeSdk } from "@/lib/personalize-client";
 // Loading state component displayed while content is being fetched
 const LoadingState = () => (
   <div className="flex flex-col items-center justify-center h-screen">
@@ -20,15 +20,15 @@ const LoadingState = () => (
 );
 
 // Preview component that handles live preview functionality for Contentstack
-export default function Preview({ path }: { path: string }) {
+export default function Preview({ contentType, locale, path, refUids, jsonRtePaths, sendPersonalizeNeeded }: { contentType: string, locale: string, path: string, refUids: string[], jsonRtePaths: string[], sendPersonalizeNeeded: boolean }) {
   // State to store the fetched page data
   const [page, setPage] = useState<PageProps>();
-
+  const personalizeSdk = getPersonalizeSdk();
   // Memoized function to fetch content data based on the current path
   // useCallback prevents unnecessary re-renders when path doesn't change
   const getContent = useCallback(async () => {
-    const data = await getPage(path); // Fetch page data from Contentstack
-    setPage(data); // Update state with fetched data
+    const data = await getEntryByUrl<Page.LandingPage['entry']>(contentType,locale, path, refUids, jsonRtePaths, personalizeSdk, sendPersonalizeNeeded) as Page.LandingPage['entry']
+    
   }, [path]); // Dependency array - function recreated only when path changes
 
   // Effect hook to initialize live preview and set up content change listener
@@ -44,5 +44,5 @@ export default function Preview({ path }: { path: string }) {
   }
 
   // Render the Page component with the fetched page data
-  return <Page page={page as PageProps} />;
+  return <div>{page.title}</div>;
 }
