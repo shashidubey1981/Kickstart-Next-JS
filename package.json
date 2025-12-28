@@ -23,6 +23,7 @@
     "@contentstack/personalize-edge-sdk": "^1.0.12",
     "@timbenniks/contentstack-endpoints": "^2.1.0",
     "isomorphic-dompurify": "^2.33.0",
+    "lodash": "^4.17.21",
     "next": "16.0.10",
     "react": "^19.2.1",
     "react-dom": "^19.2.1"
@@ -30,6 +31,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/lodash": "^4.17.7",
     "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",

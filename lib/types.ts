@@ -126,3 +126,19 @@ export interface Page extends SystemFields {
     [key: string]: CSLPFieldMapping | undefined; // Allow dynamic block indexing
   };
 }
+
+export type PersonalizeConfig = SystemFields & {
+  audiences: Audiences
+  taxonomy_path: string
+}
+export type Audiences = {
+  group?: Group[]
+}
+export type Group = {
+  name?: string
+  attributes?: Attributes[]
+}
+export type Attributes = {
+  key?: string
+  value?: string
+}

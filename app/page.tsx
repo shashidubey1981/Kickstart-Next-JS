@@ -1,11 +1,12 @@
 // Importing function to fetch page data and preview mode checker from Contentstack utilities
-import { getPage, isPreview } from "@/lib/contentstack";
+import { getPage, getEntries, isPreview } from "@/lib/contentstack";
 // Importing the Page component to render static content
 import Page from "@/components/Page";
 // Importing the Preview component to render live preview content
 import Preview from "@/components/Preview";
 // Importing Next.js headers function to access request headers
 import { headers } from "next/headers";
+import { defaultLocale } from "@/lib";
 
 // Home page component - serves as the main entry point for the application
 // This is an async server component that can fetch data at build time or request time
@@ -26,11 +27,14 @@ export default async function Home() {
   const variantAliases = variantAliasesHeader
     ? variantAliasesHeader.split(",").filter(Boolean)
     : undefined;
-
+  const contentType = 'category_landing_page'
+  const path = '/c'
+  const config = await getEntries(contentType, defaultLocale as string, path, variantAliases);
+  console.log('config>>>', config);
   // In production mode, fetch the page data server-side with personalization
   // Pass variant aliases to getPage for personalized content delivery
-  const page = await getPage("/", variantAliases);
+  //const page = await getPage("/", variantAliases);
 
   // Return the static Page component with the pre-fetched personalized data
-  return <Page page={page} />;
+  return <div></div>;
 }
