@@ -1,3 +1,4 @@
+import { isLivePreviewEnabled } from '@/lib/contentstack/config/deliverySDk'
 import { Common } from '@/types'
 
 export const prefixReferenceIncludes = (mbId: string, ...references: string[]) => {
@@ -12,6 +13,9 @@ export const inIframe = () => {
         console.error('🚀 ~ inIframe ~ e:', e)
         return true
     }
+}
+export const isDataInLiveEdit = () => {
+    return inIframe() && isLivePreviewEnabled
 }
 
 export const addToDateNow = (seconds: number) => {

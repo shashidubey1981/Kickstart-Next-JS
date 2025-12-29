@@ -16,7 +16,7 @@ import { getAbsolutePageUrl } from '@/utils'
  * @param {string} props.summary - Alternative description for meta tag
  * @param {string} props.url - url from the page's entry 
  * @param {Array} props.locales - Available locale options
- * @returns {JSX.Element} SEO component with meta tags
+ * @returns {React.ReactElement} SEO component with meta tags
  */
 
 const SEO: React.FC<Page.SeoProps> = (props: Page.SeoProps) => {
