@@ -1,6 +1,6 @@
 import type { Metadata } from "next"; // Importing the Metadata type from Next.js
 import "./globals.css"; // Importing global CSS styles
-import { defaultLocale } from '@/lib'
+import { defaultLocale } from '@/lib/contentstack'
 import { getEntries, getPersonalizationConfigFromCMS } from "@/lib/contentstack";
 
 export const metadata: Metadata = {
