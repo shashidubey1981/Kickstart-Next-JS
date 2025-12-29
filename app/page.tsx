@@ -1,14 +1,28 @@
+
 import { PageWrapper, NotFoundComponent, RenderComponents} from "@/components";
-import {getEntries, getEntryByUrl} from "@/lib/contentstack";
+import {footerJsonRtePathIncludes, getEntries, getEntryByUrl} from "@/lib/contentstack";
 import {defaultLocale} from "@/lib/contentstack";
 import {Page} from '@/types'
+import { getPersonalizeSdk } from '@/lib/contentstack/config/personalize-client'
+import { featuredArticlesReferenceIncludes, heroReferenceIncludes, imageCardsReferenceIncludes, teaserReferenceIncludes, textAndImageReferenceIncludes, userFormJsonRtePathIncludes, userFormReferenceIncludes} from '@/lib/contentstack'
 
 export default async function Home() {
 
     const variantAliases: string[] = []
     const contentType = 'home_page'
     const path = '/'
-    const homePageData = await getEntryByUrl(contentType, defaultLocale as string, path, variantAliases) as Page.LandingPage['entry'];
+    const refUids = [
+        ...heroReferenceIncludes,
+        ...textAndImageReferenceIncludes,
+        ...teaserReferenceIncludes,
+        ...imageCardsReferenceIncludes,
+        ...featuredArticlesReferenceIncludes
+    ]
+    const jsonRtePaths = [
+        ...userFormJsonRtePathIncludes,
+        ...footerJsonRtePathIncludes
+    ]
+    const homePageData = await getEntryByUrl<Page.Homepage['entry']>('home_page', defaultLocale, path , refUids, [], undefined) as Page.LandingPage['entry']
     return (
         <>
             {homePageData

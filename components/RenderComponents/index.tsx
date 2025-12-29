@@ -1,3 +1,4 @@
+
 import dynamic from 'next/dynamic'
 
 const PGPCardCollection = dynamic(() => import('@/components/PGPCardCollection').then(mod => mod.PGPCardCollection))

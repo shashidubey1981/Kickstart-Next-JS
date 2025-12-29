@@ -4,14 +4,23 @@ import { ConsentForm, Footer, Header, UserFormModal } from '@/components'
 import { App } from '@/types'
 import { defaultLocale } from '@/lib/contentstack/config/localization'
 import { WebConfigContext, WebConfigProvider } from '@/context/WebConfigContext'
-import { getEntries } from '@/lib/contentstack'
-import { onEntryChange } from '@/lib/contentstack/config/deliverySDk'
+import { footerJsonRtePathIncludes, footerReferenceIncludes, getEntries, navigationReferenceIncludes, userFormJsonRtePathIncludes, userFormReferenceIncludes } from '@/lib/contentstack'
+import { getPersonalizeSdk } from '@/lib/contentstack/config/personalize-client'
 
 const MainLayout: React.FC<App.MainLayout> = async (
     props: React.PropsWithChildren<App.MainLayout>
 ) => {  
-    
-    const webConfigRes = await getEntries('web_configuration', defaultLocale, []) as App.WebConfig
+    const refUids = [
+        ...navigationReferenceIncludes,
+        ...footerReferenceIncludes,
+        ...userFormReferenceIncludes
+    ]
+    const jsonRtePaths = [
+        ...userFormJsonRtePathIncludes,
+        ...footerJsonRtePathIncludes
+    ]
+    const data = await getEntries('web_configuration', defaultLocale, refUids, jsonRtePaths, {}, undefined) as App.WebConfig[]
+    const webConfigRes = data?.[0] as App.WebConfig
 
     return (
         <>
