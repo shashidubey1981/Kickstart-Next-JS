@@ -1,7 +1,7 @@
 'use client'
 import { Hero as HeroProps } from '@/types/components'
 import { Image, Link, Video } from '@/components'
-import { isDataInLiveEdit, resolveCta } from '@/utils'
+import { resolveCta } from '@/utils'
 import { getLocalaizeData } from '@/utils'
 
 /**
@@ -67,14 +67,12 @@ const Hero: React.FC<HeroProps> = (props: HeroProps) => {
                 {!bannerImage?.[0]?.image?.url && bannerVideo?.video?.url 
                     ? <Video
                         {...bannerVideo}
-                        addDataCslp={isDataInLiveEdit()}
                         className='h-full w-full object-cover object-center opacity-100'    
                     />
                     // eslint-disable-next-line jsx-a11y/alt-text
                     : <Image
                         {...bannerImage?.[0]}
                         $={bannerImage?.[0]?.$}
-                        addDataCslp={isDataInLiveEdit()}
                         className='h-full w-full object-cover object-center opacity-100'
                     />}
                 

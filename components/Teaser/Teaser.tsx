@@ -1,7 +1,7 @@
 'use client'
 import { Teaser as TeaserProps } from '@/types/components'
 import { Image, Link, Video } from '@/components'
-import { isDataInLiveEdit, resolveCta } from '@/utils'
+import { resolveCta } from '@/utils'
 
 /**
  * Teaser Component
@@ -47,14 +47,12 @@ const Teaser: React.FC<TeaserProps> = (props: TeaserProps) => {
                 {!image?.[0]?.image?.url && video?.video?.url 
                     ? <Video
                         {...video}
-                        addDataCslp={isDataInLiveEdit()}
                         className='h-full w-full object-cover object-center opacity-100'    
                     />
                     // eslint-disable-next-line jsx-a11y/alt-text
                     : <Image
                         {...image?.[0]}
                         $={image?.[0]?.$}
-                        addDataCslp={isDataInLiveEdit()}
                         className='h-full w-full object-cover object-center opacity-100'
                     />}
                 

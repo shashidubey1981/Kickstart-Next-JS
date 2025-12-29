@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import { Image as ImageComponent, Link } from '@/components'
 import { ImageCardItem } from '@/types/components'

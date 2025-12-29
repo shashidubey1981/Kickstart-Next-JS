@@ -101,6 +101,6 @@ export const getUnlocalizedRelativePath = (path: string, locale?: string): strin
  * @returns The complete absolute URL formed by concatenating the base URL and path
  */
 export const getAbsolutePageUrl = (path:string) => {
-    if (!window) return path
+    if (typeof window === 'undefined') return path
     return window.location.origin + path
 }
