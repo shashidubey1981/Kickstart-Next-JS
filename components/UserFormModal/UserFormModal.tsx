@@ -1,3 +1,4 @@
+'use client'
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useRef, useState } from 'react'
 import parse from 'html-react-parser'

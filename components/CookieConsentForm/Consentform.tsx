@@ -1,3 +1,4 @@
+'use client'
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { CheckIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import React, { useEffect, useRef, useState } from 'react'

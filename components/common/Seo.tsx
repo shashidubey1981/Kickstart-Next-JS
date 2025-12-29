@@ -1,5 +1,5 @@
 import { Page } from '@/types'
-import { useLocaleContext } from '@/context'
+import { defaultLocale } from "@/lib/contentstack";
 import packageInfo from '@/package.json'
 import { getAbsolutePageUrl } from '@/utils'
 
@@ -22,10 +22,9 @@ import { getAbsolutePageUrl } from '@/utils'
 const SEO: React.FC<Page.SeoProps> = (props: Page.SeoProps) => {
 
     const { seo: {no_follow, no_index, description, canonical_url} = {}, locale, summary, url, locales} = props    
-    const { currentLocale } = useLocaleContext()
-
+    
     // construct canonical url from current locale, and canonical_url / entry url
-    const canonicalUrl = getAbsolutePageUrl(`/${currentLocale}${canonical_url || url || ''}` )
+    const canonicalUrl = getAbsolutePageUrl(`/${defaultLocale}${canonical_url || url || ''}` )
 
     // Add version in meta tag for internal tracking and DOM visibility
     const { version } = packageInfo
@@ -80,7 +79,7 @@ const SEO: React.FC<Page.SeoProps> = (props: Page.SeoProps) => {
                 content={locale}
             />
 
-            {alternateMetaLinks && (alternateMetaLinks?.length > 0) && alternateMetaLinks?.map((li: { hrefLang: string, href: string }) => li?.href && li?.hrefLang && li?.hrefLang !== currentLocale && <link
+            {alternateMetaLinks && (alternateMetaLinks?.length > 0) && alternateMetaLinks?.map((li: { hrefLang: string, href: string }) => li?.href && li?.hrefLang && li?.hrefLang !== defaultLocale && <link
                 rel='alternate'
                 hrefLang={li.hrefLang}
                 href={li.href}

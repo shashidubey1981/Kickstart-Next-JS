@@ -56,7 +56,7 @@ export const getEntryByUrl = async <T>(contentTypeUid: string, locale: string, e
             .query() // Creating a query
             .where("url", QueryOperation.EQUALS, entryUrl); // Filtering entries by URL
 
-        result = await entryQuery
+        result = await query
             .addParams({'include_metadata': 'true'})
             .addParams({'include_applied_variants': 'true'})
             .find() as { entries: T[] }
@@ -72,7 +72,7 @@ export const getEntryByUrl = async <T>(contentTypeUid: string, locale: string, e
     }
 }
 
-export const getEntries = async <T>(contentTypeUid: string, locale: string, entryUrl: string, variantAliases?: string[]) => {
+export const getEntries = async <T>(contentTypeUid: string, locale: string, variantAliases?: string[]) => {
   try {
       let result: { entries: T[] } | null = null
       if (!Stack) {
@@ -86,9 +86,6 @@ export const getEntries = async <T>(contentTypeUid: string, locale: string, entr
           .includeFallback()
           .includeEmbeddedItems()
           .variants(variantAliases ?? [])
-
-      const query = entryQuery
-          .query() // Creating a query
 
       result = await entryQuery
           .find() as { entries: T[] }
@@ -109,7 +106,7 @@ export const getPersonalizationConfigFromCMS = async () => {
         const contentType = 'personalize_config'
         const path = '/'
         const variantAliases: string[] = []
-        const personalize_config = await getEntries(contentType, process.env.DEFAULT_LOCALE ?? 'en',path, variantAliases) as Common.PersonalizeConfig;
+        const personalize_config = await getEntries(contentType, process.env.DEFAULT_LOCALE ?? 'en', variantAliases) as Common.PersonalizeConfig;
         if (personalize_config) {
             return personalize_config
         } else {

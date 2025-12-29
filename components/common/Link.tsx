@@ -1,7 +1,8 @@
+'use client'
 import { useRouter } from 'next/navigation'
 import { buildLinkUrl } from '@/utils'
 import { LinkComponent as LinkComponentType } from '@/types/components'
-import { useLocaleContext, usePersonalization } from '@/context'
+import { getPersonalizeSdk } from '../../lib/contentstack/config/personalize-client'
 
 /**
  * A versatile link component that handles both internal and external links with personalization capabilities.
@@ -23,9 +24,8 @@ const LinkComponent: React.FC<LinkComponentType> = (props: LinkComponentType) =>
     const { url, children, className, target, isABEnabled,  $ } = props
     const elemattr = {className, target: target || '_self', ['data-title']: props?.['data-title'], ...$ }
     const router = useRouter()
-    const { personalizationSDK } = usePersonalization()
+    const personalizeSdk = getPersonalizeSdk()
 
-    const { currentLocale } = useLocaleContext()
     
     /**
      * Determine if URL is internal or external based on type
@@ -55,7 +55,7 @@ const LinkComponent: React.FC<LinkComponentType> = (props: LinkComponentType) =>
     const onClickHandler = (e: { preventDefault: () => void }) => {
         if(isABEnabled){ 
             e.preventDefault()
-            personalizationSDK?.triggerEvent(process.env.CONTENTSTACK_AB_PRIMARY_EVENT??'Clicked')
+            personalizeSdk?.triggerEvent(process.env.CONTENTSTACK_AB_PRIMARY_EVENT??'Clicked')
             if(href) router.push(href)
         }
     }

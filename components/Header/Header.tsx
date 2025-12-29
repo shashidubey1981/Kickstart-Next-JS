@@ -1,27 +1,27 @@
 'use client'
 /* eslint-disable @next/next/no-img-element */
 import { Fragment, useEffect, useState } from 'react'
+import type React from 'react'
 import { Dialog, DialogPanel, Disclosure, Popover, PopoverBackdrop, PopoverButton, PopoverGroup, PopoverPanel, Transition } from '@headlessui/react'
 import { Bars3Icon, ChevronRightIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid'
 import { CTAGroup, Image, Link } from '@/components'
 import { App } from '@/types'
-import useRouterHook from '@/hooks/useRouterHook'
-import { getPersonalizeAttribute, removeSpecialChar } from '@/utils'
+import { getPersonalizeAttribute, removeSpecialChar } from '@/utils/misc'
 import { LivePreviewTypeMapper, Locale  } from '@/types/common'
-import { usePersonalization } from '@/context'
 import { Header as HeaderType, MegaMenuSection } from '@/types/app'
-import { LanguageSelector } from '../LanguageSelector'
-
+import useRouterHook from '@/hooks/useRouterHook'
+import { setUserAttributes } from '@/lib/contentstack/config/personalize-client'
+import { usePersonalization } from '@/context'
 /**
  * React component that renders the header section of a website.
  * 
  * @param {App.Header} props - Component props
  * @param {App.Logo} props.logo - Logo object containing the URL and title of the logo
  * @param {App.NavItems[]} props.items - Array of menu items
- * @returns {JSX.Element} Header component
+ * @returns {React.ReactElement} Header component
  */
-function Header (props: App.Header): JSX.Element {
+function Header (props: App.Header): React.ReactElement {
 
     const { logo, items, $ } = props
 
@@ -32,14 +32,12 @@ function Header (props: App.Header): JSX.Element {
     const { path } = useRouterHook()
 
     // Determine if the current page is the home page (or AB Test Landing Page) or not
-    // Further used to set transparency of the header if the page is the home page or AB Test Landing Page or Article Page
-    const isHome: boolean = (path === '/' || path.split('/')[1] === 'article' || path.split('/')[1] === 'contact-us') ? true : false
+    // Further used to set transparency of the header if the page is the home page or AB Test Landing Page
+    const isHome: boolean = (path === '/') ? true : false
 
-    const { personalizationSDK, personalizeConfig } = usePersonalization()
+    const { personalizeConfig } = usePersonalization()
 
     const audiences = personalizeConfig?.audiences
-
-    const router = useRouterHook()
 
     // Function for opening the item menu in mobile side bar
     const handleMouseOver = (e: React.MouseEvent) => {
@@ -70,7 +68,7 @@ function Header (props: App.Header): JSX.Element {
     const setAttribute = async (region: string, mobile = false) => {
         const criteria = region.split('/').pop()?.toLowerCase()
         const attributes = getPersonalizeAttribute(audiences, removeSpecialChar(String(criteria)))
-        await personalizationSDK?.set({ ...attributes })
+        await setUserAttributes({ ...attributes })
 
         if (mobile) resetMobileNav()
     }
@@ -195,10 +193,6 @@ function Header (props: App.Header): JSX.Element {
                 </PopoverGroup>
                 <div className='flex items-center gap-x-0 xs:gap-x-4'>
 
-                    {/* * LANGUAGE SELECTOR */}
-                    <LanguageSelector
-                        locales={locales}
-                    />
                     {/* Bar Icon */}
                     <div className='flex lg:hidden'>
                         <button

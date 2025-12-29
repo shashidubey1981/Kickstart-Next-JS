@@ -22,7 +22,7 @@ export const isFooterValid = (footer:App.Footer) => {
  * @param {string} props.copyright_info - Information about the copyright
  * @returns {JSX.Element} Footer component
  */
-export const Footer: React.FC<App.Footer> = (props: App.Footer): JSX.Element => {
+export const Footer: React.FC<App.Footer> = (props: App.Footer): React.ReactElement  => {
     const { sections, copyright_info, built_by, logo, $ } = props
     const [footerColumns, setFooterColumns] = React.useState<FooterSection[]>([])
     const [footnoteLinks, setFootnoteLinks] = React.useState<FooterSection>()

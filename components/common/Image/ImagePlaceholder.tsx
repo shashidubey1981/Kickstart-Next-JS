@@ -8,11 +8,10 @@
  * @param {Object} props.$ - Optional object containing data-cslp attributes
  * @returns {JSX.Element|null} Returns placeholder div in live edit mode, null otherwise
  */
-import { isDataInLiveEdit } from '@/utils'
 
 const ImagePlaceholder: React.FC<{className?: string, $?: {'data-cslp'?: string}}>  
         = (props: {className?: string, $?: {'data-cslp'?: string}}) => {
-            return isDataInLiveEdit() && <div
+            return <div
                 className={`${props?.className} !bg-gray-500 flex items-center justify-center`}
                 data-id='image-placeholder-component'
                 {...props?.$}
