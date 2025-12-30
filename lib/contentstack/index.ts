@@ -1,6 +1,2 @@
-export * from './contentstack'
-export * from './config/deliverySDk'
-export * from './config/personalization'
 export * from './config/localization'
-export * from './config/personalize-client'
 export * from './helper'

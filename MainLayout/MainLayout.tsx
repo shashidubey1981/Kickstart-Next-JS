@@ -4,7 +4,7 @@ import { ConsentForm, Footer, Header, UserFormModal } from '@/components'
 import { App } from '@/types'
 import { defaultLocale } from '@/lib/contentstack/config/localization'
 import { WebConfigContext, WebConfigProvider } from '@/context/WebConfigContext'
-import { footerJsonRtePathIncludes, footerReferenceIncludes, getEntries, navigationReferenceIncludes, userFormJsonRtePathIncludes, userFormReferenceIncludes } from '@/lib/contentstack'
+import { footerJsonRtePathIncludes, footerReferenceIncludes, navigationReferenceIncludes, userFormJsonRtePathIncludes, userFormReferenceIncludes } from '@/lib/contentstack'
 
 
 const MainLayout: React.FC<App.MainLayout> = async (

@@ -10,7 +10,6 @@ const FacetOptions = dynamic(() => import('@/components/FacetOptions').then(mod 
 const QuickLinks = dynamic(() => import('@/components/QuickLinks').then(mod => mod.QuickLinks))
 const Text = dynamic(() => import('@/components/Text').then(mod => mod.Text))
 const TextAndImageCarousel = dynamic(() => import('@/components/TextAndImageCarousel').then(mod => mod.TextAndImageCarousel))
-import {VB_EmptyBlockParentClass, isLivePreviewEnabled} from '@/lib/contentstack/config/deliverySDk'
 import {Page} from '@/types'
 import {pageBlocks} from '@/types/pages'
 
@@ -141,7 +140,7 @@ function RenderComponents({
             {hero && <Hero id='hero-banner' {...hero} isABEnabled={isABEnabled} {...$?.hero}/>}
             <div
                 {...(($?.components) || {})} //Parent wrapper
-                className={components?.length ? undefined : `${VB_EmptyBlockParentClass} max-height mt-32`}
+                className={components?.length ? undefined : `max-height mt-32`}
             >
                 {components?.map((component, key: number) => <div
                     key={`component-${key}`} id={`component-${key}`}

@@ -11,8 +11,7 @@ import { getPersonalizeAttribute, removeSpecialChar } from '@/utils/misc'
 import { LivePreviewTypeMapper, Locale  } from '@/types/common'
 import { Header as HeaderType, MegaMenuSection } from '@/types/app'
 import useRouterHook from '@/hooks/useRouterHook'
-import { setUserAttributes } from '@/lib/contentstack/config/personalize-client'
-import { usePersonalization } from '@/context'
+import { usePersonalizationConfig } from '@/context'
 /**
  * React component that renders the header section of a website.
  * 
@@ -35,7 +34,7 @@ function Header (props: App.Header): React.ReactElement {
     // Further used to set transparency of the header if the page is the home page or AB Test Landing Page
     const isHome: boolean = (path === '/') ? true : false
 
-    const { personalizeConfig } = usePersonalization()
+    const { personalizeConfig } = usePersonalizationConfig()
 
     const audiences = personalizeConfig?.audiences
 
@@ -68,7 +67,7 @@ function Header (props: App.Header): React.ReactElement {
     const setAttribute = async (region: string, mobile = false) => {
         const criteria = region.split('/').pop()?.toLowerCase()
         const attributes = getPersonalizeAttribute(audiences, removeSpecialChar(String(criteria)))
-        await setUserAttributes({ ...attributes })
+        // await setUserAttributes({ ...attributes })
 
         if (mobile) resetMobileNav()
     }

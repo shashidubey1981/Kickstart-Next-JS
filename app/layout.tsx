@@ -4,7 +4,7 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import './globals.css'
 import {MainLayout} from "@/MainLayout/MainLayout";
-import {PersonalizationProvider} from "@/context";
+import {PersonalizationConfigProvider} from "@/context";
 import { defaultLocale } from "@/lib/contentstack/config/localization";
 import { Common } from "@/types";
 
@@ -39,6 +39,18 @@ export default async function RootLayout({
     
     const data = await response.json();
     const personalizeConfigData = data.data[0] as Common.PersonalizeConfig;
+
+    const category = 'mens-clothing'
+    const subcategory = 'mens-suits'
+    const userAttributes = `category=${category}&subcategory=${subcategory}`
+    const personalizationResponse = await fetch(`http://localhost:3001/api/personalize-sdk?${userAttributes.toString()}`, {
+        credentials: 'include',
+    });
+    if (!personalizationResponse.ok) {
+        throw new Error(`HTTP error! status: ${personalizationResponse.status}`)
+    }
+    const personalizationData = await personalizationResponse.json();
+    
     return (
         <html lang={defaultLocale}>
             <head>
@@ -54,11 +66,11 @@ export default async function RootLayout({
             <body
                 className={`${robotoCondensed.className} ${inter.className}`}
             >
-                <PersonalizationProvider personalizeConfig={personalizeConfigData || undefined}>
+                <PersonalizationConfigProvider personalizeSDK={personalizationData || undefined} personalizeConfig={personalizeConfigData || undefined}>
                     <MainLayout>
                         {children}
                     </MainLayout>
-                </PersonalizationProvider>
+                </PersonalizationConfigProvider>
             </body>
         </html>
     );
