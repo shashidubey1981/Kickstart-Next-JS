@@ -2,7 +2,6 @@
 import { useRouter } from 'next/navigation'
 import { buildLinkUrl } from '@/utils'
 import { LinkComponent as LinkComponentType } from '@/types/components'
-import { getPersonalizeSdk } from '../../lib/contentstack/config/personalize-client'
 
 /**
  * A versatile link component that handles both internal and external links with personalization capabilities.
@@ -21,11 +20,10 @@ import { getPersonalizeSdk } from '../../lib/contentstack/config/personalize-cli
  */
 
 const LinkComponent: React.FC<LinkComponentType> = (props: LinkComponentType) => {
-    const { url, children, className, target, isABEnabled,  $ } = props
+    const { url, children, className, target, isABEnabled,  $ , personalizedSdk} = props
     const elemattr = {className, target: target || '_self', ['data-title']: props?.['data-title'], ...$ }
     const router = useRouter()
-    const personalizeSdk = getPersonalizeSdk()
-
+    
     
     /**
      * Determine if URL is internal or external based on type

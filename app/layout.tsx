@@ -5,8 +5,8 @@ import 'slick-carousel/slick/slick-theme.css'
 import './globals.css'
 import {MainLayout} from "@/MainLayout/MainLayout";
 import {PersonalizationConfigProvider} from "@/context";
-import { defaultLocale } from "@/lib/contentstack/config/localization";
-import { Common } from "@/types";
+import { defaultLocale } from "@/lib/contentstack/localization";
+import { getPersonalizationConfigFromCMS } from "@/lib/contentstack/contentstack";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -27,29 +27,7 @@ export default async function RootLayout({
                                          }: Readonly<{
     children: React.ReactNode; // Type definition for children prop
 }>) {
-    const queryParams = `locale=${defaultLocale}&contentTypeUid=personalize_config`
-            
-    const response = await fetch(`http://localhost:3001/api/entries?${queryParams.toString()}`, {
-        credentials: 'include',
-    });
-    
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    
-    const data = await response.json();
-    const personalizeConfigData = data.data[0] as Common.PersonalizeConfig;
-
-    const category = 'mens-clothing'
-    const subcategory = 'mens-suits'
-    const userAttributes = `category=${category}&subcategory=${subcategory}`
-    const personalizationResponse = await fetch(`http://localhost:3001/api/personalize-sdk?${userAttributes.toString()}`, {
-        credentials: 'include',
-    });
-    if (!personalizationResponse.ok) {
-        throw new Error(`HTTP error! status: ${personalizationResponse.status}`)
-    }
-    const personalizationData = await personalizationResponse.json();
+    const personalizeConfig = await getPersonalizationConfigFromCMS()
     
     return (
         <html lang={defaultLocale}>
@@ -66,7 +44,7 @@ export default async function RootLayout({
             <body
                 className={`${robotoCondensed.className} ${inter.className}`}
             >
-                <PersonalizationConfigProvider personalizeSDK={personalizationData || undefined} personalizeConfig={personalizeConfigData || undefined}>
+                <PersonalizationConfigProvider personalizeConfig={personalizeConfig || undefined}>
                     <MainLayout>
                         {children}
                     </MainLayout>

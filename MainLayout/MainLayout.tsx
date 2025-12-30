@@ -2,9 +2,10 @@
 import React from 'react'
 import { ConsentForm, Footer, Header, UserFormModal } from '@/components'
 import { App } from '@/types'
-import { defaultLocale } from '@/lib/contentstack/config/localization'
+import { defaultLocale } from '@/lib/contentstack/localization'
 import { WebConfigContext, WebConfigProvider } from '@/context/WebConfigContext'
 import { footerJsonRtePathIncludes, footerReferenceIncludes, navigationReferenceIncludes, userFormJsonRtePathIncludes, userFormReferenceIncludes } from '@/lib/contentstack'
+import { getEntries } from '@/lib/contentstack/contentstack'
 
 
 const MainLayout: React.FC<App.MainLayout> = async (
@@ -19,19 +20,8 @@ const MainLayout: React.FC<App.MainLayout> = async (
         ...userFormJsonRtePathIncludes,
         ...footerJsonRtePathIncludes
     ]
-    const queryParams = `locale=${defaultLocale}&contentTypeUid=web_configuration&referenceFieldPath=${refUids.join(',')}&jsonRtePath=${jsonRtePaths.join(',')}`
+    const webConfigRes = await getEntries('web_configuration', defaultLocale, refUids, jsonRtePaths, {}) as App.WebConfig | undefined
             
-    const response = await fetch(`http://localhost:3001/api/entries?${queryParams.toString()}`, {
-        credentials: 'include',
-    });
-    
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    
-    const data = await response.json();
-    const webConfigRes = data.data[0] as App.WebConfig;
-
     return (
         <>
             <WebConfigProvider

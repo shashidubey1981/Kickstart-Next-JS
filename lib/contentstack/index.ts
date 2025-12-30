@@ -1,2 +1,2 @@
-export * from './config/localization'
+export * from './localization'
 export * from './helper'

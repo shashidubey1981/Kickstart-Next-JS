@@ -1,6 +1,6 @@
 'use client'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { defaultLocale } from '@/lib/contentstack/config/localization'
+import { defaultLocale } from '@/lib/contentstack/localization'
 
 const useRouterHook = () => {
     const Router = useRouter()

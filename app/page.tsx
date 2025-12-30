@@ -4,6 +4,7 @@ import {footerJsonRtePathIncludes, textJSONRtePaths} from "@/lib/contentstack";
 import {defaultLocale} from "@/lib/contentstack";
 import {Page} from '@/types'
 import { featuredArticlesReferenceIncludes, heroReferenceIncludes, imageCardsReferenceIncludes, teaserReferenceIncludes, textAndImageReferenceIncludes, userFormJsonRtePathIncludes, userFormReferenceIncludes} from '@/lib/contentstack'
+import { getEntryByUrl } from "@/lib/contentstack/contentstack";
 
 export default async function Home() {
 
@@ -15,25 +16,13 @@ export default async function Home() {
         ...textAndImageReferenceIncludes,
         ...teaserReferenceIncludes,
         ...imageCardsReferenceIncludes,
-        ...featuredArticlesReferenceIncludes,
-        ...userFormJsonRtePathIncludes,
-        ...footerJsonRtePathIncludes
+        ...featuredArticlesReferenceIncludes
     ]
-    const jsonRtePaths = [
+    const jsonRTEPaths = [
         ...textJSONRtePaths
     ]
-    const queryParams = `locale=${defaultLocale}&contentTypeUid=${contentType}&entryUrl=${entryUrl}&referenceFieldPath=${refUids.join(',')}&jsonRtePath=${jsonRtePaths.join(',')}`
-            
-    const response = await fetch(`http://localhost:3001/api/entrybyurl?${queryParams.toString()}`, {
-        credentials: 'include',
-    });
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    
-    const data = await response.json();
-    const homePageData = data.data as Page.LandingPage['entry'];
-    console.log('homePageData', homePageData);
+    const res = await getEntryByUrl<Page.Homepage['entry']>(contentType, defaultLocale, entryUrl , refUids, jsonRTEPaths) as Page.LandingPage['entry']
+    const homePageData = res as Page.LandingPage['entry'];
     return (
         <>
             {homePageData

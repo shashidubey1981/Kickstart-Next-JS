@@ -4,6 +4,7 @@ import {dynamicComponentReferenceIncludes, textJSONRtePaths} from "@/lib/content
 import {defaultLocale} from "@/lib/contentstack";
 import {Page} from '@/types'
 import { heroReferenceIncludes, imageCardsReferenceIncludes, teaserReferenceIncludes, textAndImageReferenceIncludes} from '@/lib/contentstack'
+import { getEntryByUrl } from "@/lib/contentstack/contentstack";
 
 export default async function LandingPage({ params }: { params: Promise<any> }) {
 
@@ -22,16 +23,8 @@ export default async function LandingPage({ params }: { params: Promise<any> }) 
     const jsonRtePaths = [
         ...textJSONRtePaths
     ]
-    const queryParams = `locale=${defaultLocale}&contentTypeUid=${contentType}&entryUrl=${entryUrl}&referenceFieldPath=${refUids.join(',')}&jsonRtePath=${jsonRtePaths.join(',')}`
-    const response = await fetch(`http://localhost:3001/api/entrybyurl?${queryParams.toString()}`, {
-        credentials: 'include',
-    });
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    
-    const data = await response.json();
-    const categoryPageData = data.data as Page.LandingPage['entry'];
+    const res = await getEntryByUrl<Page.LandingPage['entry']>(contentType,defaultLocale, entryUrl, refUids, jsonRtePaths) as Page.LandingPage['entry']
+    const categoryPageData = res as Page.LandingPage['entry'];
     return (
         <>
             {categoryPageData ? 
