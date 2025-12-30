@@ -22,22 +22,31 @@
     "@contentstack/live-preview-utils": "4.1.2",
     "@contentstack/personalize-edge-sdk": "^1.0.12",
     "@timbenniks/contentstack-endpoints": "^2.1.0",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.3",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "isomorphic-dompurify": "^2.33.0",
+    "@headlessui/react": "^2.1.2",
+    "@headlessui/tailwindcss": "^0.2.1",
+    "@heroicons/react": "^2.1.1",
+    "html-react-parser": "^5.1.12",
     "lodash": "^4.17.21",
     "next": "16.0.10",
+    "postcss": "^8.4.41",
     "react": "^19.2.1",
-    "react-dom": "^19.2.1"
+    "react-dom": "^19.2.1",
+    "react-slick": "^0.31.0",
+    "slick-carousel": "^1.8.1",
+    "tailwindcss": "^3.4.14"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
     "@types/lodash": "^4.17.7",
     "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "^16",
-    "tailwindcss": "^4",
     "typescript": "^5"
   }
 }

@@ -3,7 +3,7 @@ import DOMPurify from "isomorphic-dompurify";
 // Importing Next.js optimized Image component for better performance
 import Image from "next/image";
 // Importing the Page type definition from our types file
-import { Page } from "@/lib/types";
+import { Page } from "@/lib/contentstack/types";
 // Importing Visual Builder class for empty block handling in Contentstack Live Preview
 import { VB_EmptyBlockParentClass } from "@contentstack/live-preview-utils";
 

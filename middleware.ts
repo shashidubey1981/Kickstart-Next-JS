@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { initializePersonalizeSDK } from '@/lib/personalization'
+import { initializePersonalizeSDK } from '@/lib/contentstack/config/personalization'
 
 export async function middleware(request: NextRequest) {
   let sdk: any = null;

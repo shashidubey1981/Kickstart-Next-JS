@@ -1,40 +1,45 @@
-// Importing function to fetch page data and preview mode checker from Contentstack utilities
-import { getPage, getEntries, isPreview } from "@/lib/contentstack";
-// Importing the Page component to render static content
-import Page from "@/components/Page";
-// Importing the Preview component to render live preview content
-import Preview from "@/components/Preview";
-// Importing Next.js headers function to access request headers
-import { headers } from "next/headers";
-import { defaultLocale } from "@/lib";
 
-// Home page component - serves as the main entry point for the application
-// This is an async server component that can fetch data at build time or request time
+import { PageWrapper, NotFoundComponent, RenderComponents} from "@/components";
+import {footerJsonRtePathIncludes, getEntries, getEntryByUrl} from "@/lib/contentstack";
+import {defaultLocale} from "@/lib/contentstack";
+import {Page} from '@/types'
+import { getPersonalizeSdk } from '@/lib/contentstack/config/personalize-client'
+import { featuredArticlesReferenceIncludes, heroReferenceIncludes, imageCardsReferenceIncludes, teaserReferenceIncludes, textAndImageReferenceIncludes, userFormJsonRtePathIncludes, userFormReferenceIncludes} from '@/lib/contentstack'
+
 export default async function Home() {
-  // Check if the application is running in preview mode
-  // Preview mode enables live editing capabilities for content creators
-  if (isPreview) {
-    // Return the Preview component which handles real-time content updates
-    // The path "/" represents the home page URL in Contentstack
-    return <Preview path="/" />;
-  }
 
-  // Get request headers to access variant aliases from middleware
-  const headersList = await headers();
-  const variantAliasesHeader = headersList.get("x-variant-aliases");
-  
-  // Parse variant aliases from header (comma-separated string)
-  const variantAliases = variantAliasesHeader
-    ? variantAliasesHeader.split(",").filter(Boolean)
-    : undefined;
-  const contentType = 'category_landing_page'
-  const path = '/c'
-  const config = await getEntries(contentType, defaultLocale as string, path, variantAliases);
-  console.log('config>>>', config);
-  // In production mode, fetch the page data server-side with personalization
-  // Pass variant aliases to getPage for personalized content delivery
-  //const page = await getPage("/", variantAliases);
-
-  // Return the static Page component with the pre-fetched personalized data
-  return <div></div>;
+    const variantAliases: string[] = []
+    const contentType = 'home_page'
+    const path = '/'
+    const refUids = [
+        ...heroReferenceIncludes,
+        ...textAndImageReferenceIncludes,
+        ...teaserReferenceIncludes,
+        ...imageCardsReferenceIncludes,
+        ...featuredArticlesReferenceIncludes
+    ]
+    const jsonRtePaths = [
+        ...userFormJsonRtePathIncludes,
+        ...footerJsonRtePathIncludes
+    ]
+    const homePageData = await getEntryByUrl<Page.Homepage['entry']>('home_page', defaultLocale, path , refUids, [], undefined) as Page.LandingPage['entry']
+    return (
+        <>
+            {homePageData
+                ? <PageWrapper {...homePageData}>
+                    {homePageData?.components
+                        ? <RenderComponents $={homePageData?.$}
+                                            hero={homePageData?.hero && Array.isArray(homePageData.hero) ? homePageData.hero[0] : homePageData.hero}
+                                            components={[
+                                                // eslint-disable-next-line no-unsafe-optional-chaining
+                                                ...homePageData?.components
+                                            ]}
+                                            featured_articles={homePageData?.featured_articles}
+                        /> : ''}
+                </PageWrapper>
+                : <>
+                    {<NotFoundComponent/>}
+                </>}
+        </>
+    )
 }
