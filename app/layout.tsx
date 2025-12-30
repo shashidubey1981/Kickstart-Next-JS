@@ -4,7 +4,6 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import './globals.css'
 import {MainLayout} from "@/MainLayout/MainLayout";
-import {getPersonalizationConfigFromCMS} from "@/lib/contentstack";
 import {PersonalizationProvider} from "@/context";
 import { defaultLocale } from "@/lib/contentstack/config/localization";
 import { Common } from "@/types";
@@ -28,8 +27,18 @@ export default async function RootLayout({
                                          }: Readonly<{
     children: React.ReactNode; // Type definition for children prop
 }>) {
-    const personalizeConfig = await getPersonalizationConfigFromCMS()
-    const personalizeConfigData = personalizeConfig?.[0] as Common.PersonalizeConfig
+    const queryParams = `locale=${defaultLocale}&contentTypeUid=personalize_config`
+            
+    const response = await fetch(`http://localhost:3001/api/entries?${queryParams.toString()}`, {
+        credentials: 'include',
+    });
+    
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    
+    const data = await response.json();
+    const personalizeConfigData = data.data[0] as Common.PersonalizeConfig;
     return (
         <html lang={defaultLocale}>
             <head>

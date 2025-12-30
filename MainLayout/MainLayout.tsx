@@ -5,7 +5,7 @@ import { App } from '@/types'
 import { defaultLocale } from '@/lib/contentstack/config/localization'
 import { WebConfigContext, WebConfigProvider } from '@/context/WebConfigContext'
 import { footerJsonRtePathIncludes, footerReferenceIncludes, getEntries, navigationReferenceIncludes, userFormJsonRtePathIncludes, userFormReferenceIncludes } from '@/lib/contentstack'
-import { getPersonalizeSdk } from '@/lib/contentstack/config/personalize-client'
+
 
 const MainLayout: React.FC<App.MainLayout> = async (
     props: React.PropsWithChildren<App.MainLayout>
@@ -20,6 +20,7 @@ const MainLayout: React.FC<App.MainLayout> = async (
         ...footerJsonRtePathIncludes
     ]
     const queryParams = `locale=${defaultLocale}&contentTypeUid=web_configuration&referenceFieldPath=${refUids.join(',')}&jsonRtePath=${jsonRtePaths.join(',')}`
+            
     const response = await fetch(`http://localhost:3001/api/entries?${queryParams.toString()}`, {
         credentials: 'include',
     });
