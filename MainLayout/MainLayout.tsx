@@ -19,8 +19,17 @@ const MainLayout: React.FC<App.MainLayout> = async (
         ...userFormJsonRtePathIncludes,
         ...footerJsonRtePathIncludes
     ]
-    const data = await getEntries('web_configuration', defaultLocale, refUids, jsonRtePaths, {}, undefined) as App.WebConfig[]
-    const webConfigRes = data?.[0] as App.WebConfig
+    const queryParams = `locale=${defaultLocale}&contentTypeUid=web_configuration&referenceFieldPath=${refUids.join(',')}&jsonRtePath=${jsonRtePaths.join(',')}`
+    const response = await fetch(`http://localhost:3001/api/entries?${queryParams.toString()}`, {
+        credentials: 'include',
+    });
+    
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    
+    const data = await response.json();
+    const webConfigRes = data.data[0] as App.WebConfig;
 
     return (
         <>
@@ -45,15 +54,15 @@ const MainLayout: React.FC<App.MainLayout> = async (
                     />
                 }
                 {/* sticky cookie consent from */}
-                {webConfigRes?.consent_modal && <ConsentForm
+                {/* {webConfigRes?.consent_modal && <ConsentForm
                     {...webConfigRes.consent_modal}
                     $={{
                         consent_modal: webConfigRes?.$?.consent_modal ,
                         ...webConfigRes?.consent_modal?.$
                     }}
-                />}
-                {/* user sign up from */}
-                {webConfigRes?.user_form?.[0] && <UserFormModal {...webConfigRes.user_form[0]} />}
+                />} */}
+                {/* user sign up from
+                {webConfigRes?.user_form?.[0] && <UserFormModal {...webConfigRes.user_form[0]} />} */}
             </WebConfigProvider>
         </>
     )

@@ -7,6 +7,7 @@ import {MainLayout} from "@/MainLayout/MainLayout";
 import {getPersonalizationConfigFromCMS} from "@/lib/contentstack";
 import {PersonalizationProvider} from "@/context";
 import { defaultLocale } from "@/lib/contentstack/config/localization";
+import { Common } from "@/types";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -28,6 +29,7 @@ export default async function RootLayout({
     children: React.ReactNode; // Type definition for children prop
 }>) {
     const personalizeConfig = await getPersonalizationConfigFromCMS()
+    const personalizeConfigData = personalizeConfig?.[0] as Common.PersonalizeConfig
     return (
         <html lang={defaultLocale}>
             <head>
@@ -43,7 +45,7 @@ export default async function RootLayout({
             <body
                 className={`${robotoCondensed.className} ${inter.className}`}
             >
-                <PersonalizationProvider personalizeConfig={personalizeConfig || undefined}>
+                <PersonalizationProvider personalizeConfig={personalizeConfigData || undefined}>
                     <MainLayout>
                         {children}
                     </MainLayout>
