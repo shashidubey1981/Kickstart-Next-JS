@@ -1,5 +1,4 @@
 
-import { use } from 'react'
 import { PageWrapper, NotFoundComponent, RenderComponents} from "@/components";
 import {dynamicComponentReferenceIncludes, textJSONRtePaths} from "@/lib/contentstack";
 import {defaultLocale} from "@/lib/contentstack";
@@ -8,7 +7,7 @@ import { heroReferenceIncludes, imageCardsReferenceIncludes, teaserReferenceIncl
 
 export default async function LandingPage({ params }: { params: Promise<any> }) {
 
-    const unwrappedParams = use(params)
+    const unwrappedParams = await params
     const pathInfoEntries = unwrappedParams;
     const variantAliases: string[] = []
     const contentType = 'category_landing_page'
@@ -24,7 +23,6 @@ export default async function LandingPage({ params }: { params: Promise<any> }) 
         ...textJSONRtePaths
     ]
     const queryParams = `locale=${defaultLocale}&contentTypeUid=${contentType}&entryUrl=${entryUrl}&referenceFieldPath=${refUids.join(',')}&jsonRtePath=${jsonRtePaths.join(',')}`
-            console.log('queryParams', queryParams);
     const response = await fetch(`http://localhost:3001/api/entrybyurl?${queryParams.toString()}`, {
         credentials: 'include',
     });
@@ -33,9 +31,7 @@ export default async function LandingPage({ params }: { params: Promise<any> }) 
     }
     
     const data = await response.json();
-    console.log('data', data);
     const categoryPageData = data.data as Page.LandingPage['entry'];
-    console.log('categoryPageData', categoryPageData);
     return (
         <>
             {categoryPageData ? 
