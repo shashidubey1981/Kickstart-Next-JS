@@ -1,15 +1,26 @@
 
 import { PageWrapper, NotFoundComponent, RenderComponents} from "@/components";
-import {footerJsonRtePathIncludes, textJSONRtePaths} from "@/lib/contentstack";
+import {textJSONRtePaths} from "@/lib/contentstack";
 import {defaultLocale} from "@/lib/contentstack";
 import {Page} from '@/types'
 import { featuredArticlesReferenceIncludes, heroReferenceIncludes, imageCardsReferenceIncludes, teaserReferenceIncludes, textAndImageReferenceIncludes, userFormJsonRtePathIncludes, userFormReferenceIncludes} from '@/lib/contentstack'
 import { getEntryByUrl } from "@/lib/contentstack/contentstack";
+import { getPersonalizeAttribute, removeSpecialChar } from "@/utils/misc";
+import { usePersonalizationConfig } from "@/context/PersonalizationConfigProvider";
 
-export default async function Home() {
+export default async function Home({ params }: { params: Promise<any> }) {
 
-    const variantAliases: string[] = []
+    const unwrappedParams = await params
+    const pathInfoEntries = unwrappedParams;
+    const Pathname = pathInfoEntries.path;
     const contentType = 'home_page'
+    const { personalizeConfig } = usePersonalizationConfig()
+    const audiences = personalizeConfig?.audiences
+    console.log('audiences', audiences);
+    const criteria = Pathname.split('/').pop()?.toLowerCase()
+    console.log('criteria', criteria);
+    const attributes = getPersonalizeAttribute(audiences, removeSpecialChar(String(criteria)))
+    console.log('attributes', attributes);
     const entryUrl = '/'
     const refUids = [
         ...heroReferenceIncludes,

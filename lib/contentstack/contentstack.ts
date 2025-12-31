@@ -15,10 +15,10 @@ export const getEntries = async (contentTypeUid: string, locale: string , refere
         const response = await fetch(`${apiBaseUrl}/api/entries?${queryParams.toString()}`, {
             credentials: 'include',
         });
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`)
-        }
         const data = await response.json();
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${data.message}`)
+        }
         const entriesData = data.data[0];
         return entriesData;
     } catch (error) {
@@ -37,11 +37,11 @@ export const getEntryByUrl = async <T> (contentTypeUid: string, locale: string, 
         const response = await fetch(`${apiBaseUrl}/api/entrybyurl?${queryParams.toString()}`, {
             credentials: 'include',
         });
+        const data = await response.json();
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`)
+            throw new Error(`HTTP error! status: ${data.message}`)
         }
         
-        const data = await response.json();
         const entryData = data.data;
         return entryData;
     } catch (error) {
@@ -59,10 +59,11 @@ export const getPersonalizeSdk = async <T> (queryParams?: string[]) => {
         const response = await fetch(`${apiBaseUrl}/api/personalize-sdk?${queryParams?.toString()}`, {
             credentials: 'include',
         });
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`)
-        }
         const data = await response.json();
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${data.message}`)
+        }
+        
         const personalizeSdkData = data.data[0] as Sdk;
         return personalizeSdkData;
     } catch (error) {
@@ -85,10 +86,11 @@ export const getPersonalizationConfigFromCMS = async () => {
         const response = await fetch(`${apiBaseUrl}/api/entries?${queryParams.toString()}`, {
          credentials: 'include',
         });
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`)
-        }
         const data = await response.json();
+        console.log('data', data);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${data.message}`)
+        }
         const personalizeConfigData = data.data[0] as Common.PersonalizeConfig;
         return personalizeConfigData;
     } catch(e){
