@@ -8,7 +8,7 @@ const getApiBaseUrl = () => {
     return process.env.NEXT_PUBLIC_API_BASE_URL || process.env.API_BASE_URL || 'http://localhost:3001';
 }
 
-export const getEntries = async <T>(contentTypeUid: string, locale: string , referenceFieldPath: string[], jsonRtePath: string[], query: { queryOperator?: string; filterQuery?: any },  personalizationSDK?: Sdk, limit:number=0) => {
+export const getEntries = async (contentTypeUid: string, locale: string , referenceFieldPath: string[], jsonRtePath: string[], query: { queryOperator?: string; filterQuery?: any },  personalizationSDK?: Sdk, limit:number=0) => {
     try {
         const queryParams = `locale=${locale}&contentTypeUid=${contentTypeUid}&referenceFieldPath=${referenceFieldPath.join(',')}&jsonRtePath=${jsonRtePath.join(',')}&limit=${limit}`
         const apiBaseUrl = getApiBaseUrl();
